@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Escola Municipal Professora Geni Maria da Silva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --verde-escolar: #2d5a27;
+            --verde-claro: #4a7c59;
+            --dourado: #f4d03f;
+            --azul-claro: #5dade2;
+            --branco: #ffffff;
+            --cinza-claro: #f8f9fa;
+            --cinza-medio: #6c757d;
+            --texto-escuro: #2c3e50;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: var(--branco);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, var(--verde-escolar) 0%, var(--verde-claro) 100%);
+            color: var(--branco);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: var(--branco);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--verde-escolar);
+            display: none; /* Ocultar ícone quando há imagem */
+        }
+
+        .school-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .school-subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .impact-phrase {
+            background: var(--dourado);
+            color: var(--verde-escolar);
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-style: italic;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .login-form {
+            padding: 40px 30px;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--verde-escolar);
+        }
+
+        .form-title h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-title p {
+            color: var(--cinza-medio);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--verde-escolar);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+            background: var(--branco);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--verde-claro);
+            box-shadow: 0 0 0 3px rgba(77, 124, 89, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--verde-escolar), var(--verde-claro));
+            color: var(--branco);
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(45, 90, 39, 0.3);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            background: var(--azul-claro);
+            color: var(--branco);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .school-info {
+            background: #f8f9fa;
+            padding: 25px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--cinza-medio);
+        }
+
+        .info-item i {
+            color: var(--verde-escolar);
+            width: 16px;
+            text-align: center;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: var(--cinza-medio);
+            border-top: 1px solid #e9ecef;
+            background: #fafafa;
+        }
+
+        .powered-by {
+            font-weight: 600;
+            color: var(--verde-escolar);
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .login-header {
+                padding: 30px 20px;
+            }
+            
+            .login-form {
+                padding: 30px 20px;
+            }
+            
+            .school-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Header da Escola -->
+        <div class="login-header">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTAwIDIwQzEzNS44OTggMjAgMTY1IDQ5LjEwMTYgMTY1IDg1QzE2NSAxMjAuODk4IDEzNS44OTggMTUwIDEwMCAxNTBDNjQuMTAxNiAxNTAgMzUgMTIwLjg5OCAzNSA4NUMzNSA0OS4xMDE2IDY0LjEwMTYgMjAgMTAwIDIwWiIgZmlsbD0idXJsKCNsaW5lYXJHcmFkaWVudDEpIi8+CjxwYXRoIGQ9Ik0xMDAgMTcwQzE0Ni45NDQgMTcwIDE4NSAxMzEuOTQ0IDE4NSA4NUMxODUgMzguMDU1OCAxNDYuOTQ0IDAgMTAwIDBDNTMuMDU1OCAwIDE1IDM4LjA1NTggMTUgODVDMTUgMTMxLjk0NCA1My4wNTU4IDE3MCAxMDAgMTcwWiIgc3Ryb2tlPSIjMjJCNTczIiBzdHJva2Utd2lkdGg9IjQiLz4KPHBhdGggZD0iTTcwIDYwSDEzMFY5MEg3MFY2MFoiIGZpbGw9IiMyMjg1RjYiLz4KPHN2ZyB4PSI3NSIgeT0iNjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDUwIDIwIj4KPHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA1MCAyMCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0yNSAxMEwzNSA1TDQ1IDEwTDM1IDE1TDI1IDEwWiIgZmlsbD0id2hpdGUiLz4KPHN2Zz4KPHN2Zz4KPHN2ZyB4PSI2NSIgeT0iMTEwIiB3aWR0aD0iNzAiIGhlaWdodD0iMzAiPgo8dGV4dCB4PSIzNSIgeT0iMTUiIGZpbGw9IiNGRkQ3MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkUuTS5QLkcuTS5TPC90ZXh0Pgo8L3N2Zz4KPHN2ZyB4PSI2NSIgeT0iMTQ1IiB3aWR0aD0iNzAiIGhlaWdodD0iMjAiPgo8dGV4dCB4PSIzNSIgeT0iMTUiIGZpbGw9IiMyMjg1RjYiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPsOBZ3VhIFByZXRhLVBFPC90ZXh0Pgo8L3N2Zz4KPHN2ZyB4PSI2NSIgeT0iMTY1IiB3aWR0aD0iNzAiIGhlaWdodD0iMjAiPgo8dGV4dCB4PSIzNSIgeT0iMTUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4yMDExPC90ZXh0Pgo8L3N2Zz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyR3JhZGllbnQxIiB4MT0iMTAwIiB5MT0iMjAiIHgyPSIxMDAiIHkyPSIxNTAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0ZGRDcwMCIvPgo8c3RvcCBvZmZzZXQ9IjAuNSIgc3RvcC1jb2xvcj0iIzIyODVGNiIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxRTQwQUYiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=" 
+                     alt="Logo da Escola Municipal Professora Geni Maria da Silva"
+                     onerror="this.style.display='none'; this.parentElement.querySelector('i').style.display='flex';">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="school-name">Escola Municipal Professora Geni Maria da Silva</h1>
+            <p class="school-subtitle">Portal de Acesso Wi-Fi</p>
+        </div>
+
+        <!-- Frase de Impacto -->
+        <div class="impact-phrase">
+            "Conectar é aprender. Aqui, o saber tem prioridade."
+        </div>
+
+        <!-- Formulário de Login -->
+        <div class="login-form">
+            <div class="form-title">
+                <h2><i class="fas fa-wifi"></i> Acesso à Internet</h2>
+                <p>Preencha os dados para se conectar</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="studentName">Nome do Estudante:</label>
+                    <input type="text" id="studentName" name="studentName" required 
+                           placeholder="Digite seu nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="studentClass">Série / Turma:</label>
+                    <select id="studentClass" name="studentClass" required>
+                        <option value="">Selecione sua turma</option>
+                        <option value="6A">6º Ano A</option>
+                        <option value="6B">6º Ano B</option>
+                        <option value="7A">7º Ano A</option>
+                        <option value="7B">7º Ano B</option>
+                        <option value="8A">8º Ano A</option>
+                        <option value="8B">8º Ano B</option>
+                        <option value="9A">9º Ano A</option>
+                        <option value="9B">9º Ano B</option>
+                        <option value="professor">Professor/Funcionário</option>
+                        <option value="visitante">Visitante</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span id="buttonText">Conectar à Internet</span>
+                    <div class="spinner hidden" id="spinner"></div>
+                </button>
+
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="successText">Conectado com sucesso! Bem-vindo(a).</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Informações da Escola -->
+        <div class="school-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Rua Alto do Cruzeiro, S/N - Bairro Cruzeiro, Água Preta - PE</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>contato@escolageni.edu.br</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Direção: Estefania</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Rede segura • Uso educacional</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <div class="footer-note">
+            <p><strong>Página educativa • Não armazena dados pessoais</strong></p>
+            <p>Powered by <span class="powered-by">WK Telecom</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Configurações
+        const CONFIG = {
+            loadingTime: 2000, // 2 segundos de simulação
+            successDisplayTime: 3000 // 3 segundos mostrando sucesso
+        };
+
+        // Elementos do DOM
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const spinner = document.getElementById('spinner');
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        const studentNameInput = document.getElementById('studentName');
+        const studentClassSelect = document.getElementById('studentClass');
+
+        // Event Listeners
+        loginForm.addEventListener('submit', handleLogin);
+        studentNameInput.addEventListener('input', validateForm);
+        studentClassSelect.addEventListener('change', validateForm);
+
+        // Função principal de login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const studentName = studentNameInput.value.trim();
+            const studentClass = studentClassSelect.value;
+            
+            if (!studentName || !studentClass) {
+                showError('Por favor, preencha todos os campos');
+                return;
+            }
+
+            // Iniciar processo de conexão
+            startConnection(studentName, studentClass);
+        }
+
+        // Simular processo de conexão
+        function startConnection(name, classe) {
+            // Desabilitar formulário
+            loginButton.disabled = true;
+            buttonText.textContent = 'Conectando...';
+            spinner.classList.remove('hidden');
+            
+            // Simular tempo de conexão
+            setTimeout(() => {
+                // Sucesso na conexão
+                connectionSuccess(name, classe);
+            }, CONFIG.loadingTime);
+        }
+
+        // Sucesso na conexão
+        function connectionSuccess(name, classe) {
+            // Ocultar spinner
+            spinner.classList.add('hidden');
+            buttonText.textContent = 'Conectado!';
+            loginButton.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            
+            // Mostrar mensagem de sucesso
+            const className = getClassDisplayName(classe);
+            successText.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                Bem-vindo(a), <strong>${name}</strong>!<br>
+                Você está conectado como <strong>${className}</strong>
+            `;
+            successMessage.classList.add('show');
+            
+            // Simular redirecionamento ou manter conexão
+            setTimeout(() => {
+                // Aqui você pode redirecionar para uma página de sucesso
+                // ou manter o usuário conectado
+                showFinalMessage();
+            }, CONFIG.successDisplayTime);
+        }
+
+        // Mensagem final de conexão estabelecida
+        function showFinalMessage() {
+            successText.innerHTML = `
+                <i class="fas fa-wifi"></i>
+                <strong>Conexão estabelecida!</strong><br>
+                Você já pode navegar na internet
+            `;
+            
+            // Reset do formulário após um tempo (opcional)
+            setTimeout(() => {
+                resetForm();
+            }, 5000);
+        }
+
+        // Resetar formulário
+        function resetForm() {
+            loginForm.reset();
+            loginButton.disabled = false;
+            loginButton.style.background = 'linear-gradient(135deg, var(--verde-escolar), var(--verde-claro))';
+            buttonText.textContent = 'Conectar à Internet';
+            successMessage.classList.remove('show');
+            validateForm();
+        }
+
+        // Validar formulário
+        function validateForm() {
+            const isValid = studentNameInput.value.trim() && studentClassSelect.value;
+            loginButton.disabled = !isValid;
+        }
+
+        // Obter nome de exibição da classe
+        function getClassDisplayName(value) {
+            const classNames = {
+                '6A': '6º Ano A',
+                '6B': '6º Ano B',
+                '7A': '7º Ano A',
+                '7B': '7º Ano B',
+                '8A': '8º Ano A',
+                '8B': '8º Ano B',
+                '9A': '9º Ano A',
+                '9B': '9º Ano B',
+                'professor': 'Professor/Funcionário',
+                'visitante': 'Visitante'
+            };
+            return classNames[value] || value;
+        }
+
+        // Mostrar erro (caso necessário)
+        function showError(message) {
+            alert(message); // Simples para este exemplo
+            // Em uma versão mais sofisticada, você pode criar um toast de erro
+        }
+
+        // Validação inicial
+        validateForm();
+
+        // Log para debug
+        console.log('📶 Tela de Login Wi-Fi carregada!');
+        console.log('🏫 Escola: Professora Geni Maria da Silva');
+    </script>
+</body>
+</html>
